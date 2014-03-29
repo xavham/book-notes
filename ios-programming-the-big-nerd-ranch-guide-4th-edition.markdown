@@ -118,3 +118,134 @@ by Christian Keur, Aaron Hillegass, and Joe Conway
 * When you implement `tableView:commitEditingStyle:forRowAtIndexPath:`, swipe-to-delete also works automatically.
 * In the call to `tableView:moveRowAtIndexPath:toIndexPath:`, the row of the new path is that after the item has been removed from its existing path.
 * In editing mode, the `UITableView` will not display the reordering controls if its data source does not implement `tableView:moveRowAtIndexPath:toIndexPath:`.
+
+### Chapter 10: UINavigationController
+
+* The view of a `UINavigationController` always has two subviews: a `UINavigationBar` and the view belonging to the `topViewController`.
+* A `UINavigationController` will automatically resize the view of a `UIViewController` on its stack so that it fits below the navigation bar.
+* Do not position subviews near the top of a XIB file. A view will extend beneath either a `UINavigationBar` or beneath a `UITabBar`.
+* If you display an `.m` file next to its XIB file using the assistant editor, you can Control-drag views from the XIB to the `.m` file to automatically create outlets.
+* The shortcut Command-T opens up a new tab, while Command-Shift-} and Command-Shift-{ cycle through the tabs.
+* When the message `endEditing:` is sent to a view, if it or any of its subviews is the first responder, it will resign its first responder status and dismiss the keyboard.
+* Every `UIViewController` has a `navigationItem` property that supplies the navigation bar with the content that it needs to draw.
+* For the `titleView` of a `UINavigationItem`, you can either use a basic string as the title or specify a `UIView` instance.
+* `UIViewController` has an `editButtonItem` property that is of type `UIBarButtonItem`. When pressed, it sends the message `setEditing:animated:` to the controller.
+
+### Chapter 11: Camera
+
+* The `contentMode` property of `UIImageView` determines where to position and how to resize the content of its frame.
+* You cannot use `UIImagePickerControllerSourceTypeCamera` on devices without cameras, and must send `isSourceTypeAvailable:` to `UIImagePickerController` first.
+* To populate the photo library in the simulator, open Safari in the simulator, navigate to a page with an image, and save the image.
+* Objects of type `NSUUID` represent a UUID and are generated using the time, a counter, and a hardware identifier, which is usually the MAC address from the WiFi device.
+* While a `UIBarButtonItem` only sends its target an action message when it is pressed, `UIControl` can send messages in response to a variety of events.
+* With the `#pragma mark` directive, you can specify just a divider with `-`, a label, or both by prefacing the label with `-`.
+* Just like the class method `isSourceTypeAvailable:` returns whether a device has a camera, `availableMediaTypesForSourceType:` returns whether it can capture video.
+* After the user takes a video, `imagePickerController:didFinishPickingMediaWithInfo:` is passed the path to the video in a temporary directory.
+
+### Chapter 12: Touch Events and UIResponder
+
+* If a finger moves outside the frame of the `UIView` that it began on, that view still receives `touchesMoved:withEvent:` and `touchesEnded:withEvent` messages.
+* While the methods of `UIResponder` accept a set of `UITouch` instances, there are usually multiple responder methods with one or more touches.
+* Once a touch begins, a `UIResponder` will ignore subsequent touches unless its `multipleTouchesEnabled` property is set.
+* You can simulate touching with multiple fingers in the simulator by holding down the Option key as you drag.
+* The `valueWithNonretainedObject:` method of `NSValue` is useful if you want to add an object to a collection without creating a strong reference to it.
+* This method also allows objects that do not implement `NSCopying` to be used as keys in dictionaries.
+* Every `UIResponder`, such as `UIView`, `UIViewController`, `UIWindow`, and `UIApplication`, has a pointer called `nextResponder`, forming a *responder chain*.
+* By default, methods `touchesBegin:withEvent:`, `touchesMoved:withEvent:`, and `touchesEnded:withEvent` simply delegate to `nextResponder`.
+* The `CGRectContainsPoint` method returns whether a given point is in a `CGRect` variable.
+
+### Chapter 13: UIGestureRecognizer and UIMenuController
+
+* A `UIGestureRecognizer` intercepts touches destined for a view, and so this view may not respond to typical `UIResponder` messages.
+* Setting the `delaysTouchesBegan` property delays sending `touchesBegan:withEvent:` to its view if it is still possible for the gesture to be recognized.
+* The method `requireGestureRecognizerToFail:` allows you to require a double-tap recognizer to fail before invoking a single-tap recognizer.
+* The `locationInView:` method of `UIGestureRecognizer` returns the coordinate where the gesture occurred in the coordinate system of its view argument.
+* For a `UIMenuController` to appear, a view that responds to at least one action message of its menu items must be a first responder of the window.
+* If you have a custom view that needs to become the first responder, you must implement `canBecomeFirstResponder` to return `YES`.
+* A long press gesture begins when the user holds a touch for 0.5 seconds, and ends when the touch ends.
+* A gesture recognizer will send `gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:` to its `delegate` if another gesture recognizer has recognized its gesture, too.
+* The `translationInView:` method of `UIPanGestureRecognizer` returns a `CGPoint` containing how far the pan has moved in the coordinate system of its view argument.
+* Pass `CGPointZero` to `setTranslation:inView:` of `UIPanGestureRecognizer` at the end of its action method to report the change in translation between action method calls.
+* If a `UIResponder` implements a method in `UIResponderStandardEditActions`, it enables the corresponding default menu item in an unmodified menu controller.
+* A `UIGestureRecognizer` for a discrete gesture like tap only enters the *recognized* state; it does not transition through the *begin*, *change*, and *end* states.
+* A gesture recognizer can enter the *fail* state, such as when no amount of finger contortion can make the particular gesture, given their current position.
+
+### Chapter 14: Debugging Tools
+
+* The debug gauges in Xcode are based on the hardware running the simulator, which is undoubtedly more powerful than the iOS device.
+* In the *Memory Report*, the *Memory* graph scales so that peak usage represents 100%.
+* In the *Allocations* instrument, the *# Overall* column shows you how many instances of a class have been allocated -- even if they have since been deallocated.
+* When you select a method, the percentage on each line of the method specifies the amount of memory that line allocates compared to the other lines.
+* The *Generation Analysis* category, also called Heapshot Analysis, is very useful for inspecting what objects get allocated for a specific event.
+* By choosing *Invert Call Tree* in the *Time Profiler*, you can see how much time is spent in each method call.
+* If a system call takes a lot of time, you can change it so that the time spent in that method is attributed to the method that called it.
+* The `mach_msg_trap()` method is where the main thread sits when waiting for input, and so it is not a bad thing to spend time in this function.
+* `CGPoint` and `CGRect` are structures instead of Objective-C classes so they do not incur the overhead of sending messages for simple operations.
+* A project has at least one *target*. You build and run the target, which produces a *product*, such as the application, a library, or a unit test bundle.
+* Under *Build Settings*, setting *Analyze During 'Build'* will automatically run the static analyzer every time you build your application.
+
+### Chapter 15: Introduction to Auto Layout
+
+* A single application that runs natively on both the iPhone and the iPad is called a *universal application*.
+* The iPhone 4S has 320x480 points, the iPhone 5 and later has 320x568 points, and all iPads have 768x1024 points.
+* Constraints determine the layout attributes like the size, margins, center, and baseline of the alignment rectangle constructed by Auto Layout.
+* The *nearest neighbor* of a view is the closest sibling view in a specified direction, or its superview if no such sibling view exists.
+* Apple recommends that you add constraints using Interface Builder whenever possible, instead of defining them programmatically.
+* Constraint problems include missing constraints, conflicting constraints, and constraints not matching a view's size and position on the canvas.
+* By Control-dragging from one view to another on the canvas, you can specify a constraint between those views.
+* Constraints have a priority value ranging from `1` to `1000`, where `1000` is a required constraint. This is their default value.
+* To remedy an ambiguous layout, which occurs when there is more than one way to fulfill a set of constraints, add another constraint.
+* To display an alternate layout resulting from ambiguous constraints, send the message `exerciseAmbiguityInLayout` to each subview.
+* A misplaced view problem is when a view's frame in a XIB does not match its constraints.
+* For a string representation of the view hierarchy, with views having ambiguous layout tagged, set a breakpoint and then enter into the debugger `po [[ UIWindow keyWindow] _autolayoutTrace]`.
+* If you need completely different views depending on the device, create one XIB file with a `~iphone` suffix, and another with an `~ipad` suffix.
+
+### Chapter 16: Auto Layout: Programmatic Constraints
+
+* If creating and constraining an additional view to add to a view hierarchy that was created by loading a NIB file, override method `viewDidLoad`.
+* Without setting `translatesAutoresizingMaskIntoConstraints` to `NO`, iOS creates constraints from the mask, which may conflict with other constraints.
+* In the Visual Format Language, or VFL, the dash by itself sets the spacing to the standard number of points between views, which is 8.
+* You should call `addConstraints:` on the closest common ancestor of all the views that are affected by the constraint.
+* Unlike other constraints, intrinsic content size constraints have a *content hugging priority* and a *content compression resistance priority*.
+* A content hugging priority of `1000` means that the view should never be allowed to grow larger than its intrinsic content size.
+* A content compression resistance priority of `1000` means that the view should never be allowed to be smaller than its intrinsic content size.
+* Before Auto Layout, each view had a resizing mask that constrained the relationship between a view and its superview.
+* When debugging constraints, a constraint from the resizing mask has the type `NSAutoResizingMaskLayoutConstraint` instead of `NSLayoutConstraint`.
+
+### Chapter 17: Autorotation, Popover Controllers, and Modal View Controllers
+
+* *Device orientation* represents the physical orientation of the device. You can access it through the `orientation` property of `UIDevice`.
+* The *interface orientation* is a property of the running application, and is determined by the location of the Home button.
+* For the interface orientation to change, both the `rootViewController` of the application and the application itself must allow the new orientation.
+* To match convention, a view controller on the iPad allows all four orientations, while one on the iPhone allows any orientation other than upside-down.
+* A `UITabViewController` only supports an orientation if the view controllers for each of its tabs support it.
+* The `statusBarOrientation` method of the `UIApplication` instance returns the interface orientation.
+* Trying to instantiate `UIPopoverController` on anything but an iPad will throw an exception.
+* Explicitly calling `dismissPopoverAnimated:` on a `UIPopoverController` will not send `popoverControllerDidDismissPopover:` to its delegate.
+* The `presentingViewController` property of `UIViewController` allows a modally-presented view controller to communicate with the view controller that presented it.
+* When a modally-presented view controller uses the `UIModalPresentationFormSheet` style, the presenting view controller is not sent `viewWillAppear:` or `viewDidAppear:`.
+* The two relationships between view controllers are *parent-child* relationships and *presenting-presenter* relationships.
+* `UINavigationController`, `UITabBarController`, and `UISplitViewController` are all *view controller containers*, where each has a `viewControllers` property.
+* A *view controller container* subclasses `UIViewController` and selectively adds the views of `viewControllers` as subviews of its own view.
+* The `parentViewController` property of `UIViewController` refers to the closest view controller ancestor in a *family*, or tree of view controller containers.
+* With a modally-presented view controller, `presentingViewController` and `presentedViewController` are valid for each view controller in each family, and always refer to the oldest ancestor in the other family.
+
+### Chapter 18: Saving, Loading, and Application States
+
+* An `NSCoder` organizes the stream of data that it writes to the filesystem as a collection of key-value pairs.
+* Holding down the Option key and clicking on a class name presents a pop-up window with a brief description and links to its header file and its reference.
+* Although a XIB file is not a standard archive, archiving is how Interface Builder writes and reads XIB files.
+* In the application sandbox, directories `Documents/` and `Library/Caches` contain data that persists between runs, but only the former is synchronized with iTunes.
+* Static method `archiveRootObject:toFile:` of `NSKeyedArchiver` archives an object implementing `NSCoding` to the given filename.
+* When an overlay to handle an SMS message, push notification, phone call, or alarm appears on top of your application, it is in the *inactive state*.
+* An application spends about ten seconds in the *background state* before it enters the *suspended state*.
+* The inactive state loses the ability to receive events, the background state loses visibility, and the suspended state loses the ability to execute code.
+* The operating system terminates suspended applications as needed when available memory is low; such an application receives no notification of this.
+* Transitioning to the background state is a good place to save outstanding changes, because it's the last time it can execute code before entering the suspended state.
+* Calling `writeToFile:atomically:` of `NSData` with `YES` writes the data to a temporary file, and then renames that file to the first parameter.
+* In addition to `self`, the implicit variable `_cmd` is the selector for the current method, and can be translated to a string using `NSStringFromSelector`.
+* The `localizedDescription` method of `NSError` returns a human-readable description that is suitable for display to the user.
+* Use `NSException` if the error lies with the programmer, and `NSError` if a request is reasonable but could not be fulfilled.
+* To use `writeToFile:` and `initWithContentsOfFile:` with collection objects, they must contain only *property list serializable* objects, namely `NSString`, `NSNumber`, `NSDate`, `NSData`, `NSArray`, and `NSDictionary`.
+* Files within the application bundle are read-only, and you cannot dynamically add files to the application bundle at runtime.
+
